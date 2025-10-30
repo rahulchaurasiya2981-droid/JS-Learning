@@ -1,0 +1,85 @@
+// (1) Find unique element in array
+// Input : [1, 2, 2, 3, 4, 4]
+// Output: [1,2]
+
+// (2)
+// Input :
+// const obj={};
+// obj[1]="one";
+// obj["1"]="new_one";
+// console.log(obj["1"]); 
+// Output : guess the o/p ?
+
+
+// (3) Asyn/Sync/Promize/next
+// console.log("start");
+// Promise.resolve().then(()=> console.log("promise-1"));
+// Promise.resolve().then(()=> console.log("promise-2"));
+// console.log("end");
+
+// Output : guess the o/p ?
+
+
+// (4)
+// Input :
+// console.log([] + []);
+// console.log({} + {});
+// console.log([] + {});
+// console.log({} + []);
+
+// Output : guess the o/p ?
+
+
+// (5)
+// Input :
+// foo ="Hello";
+// console.log(foo);
+// var foo="hi...";
+
+// Output : guess the o/p ?
+
+
+// (6) 
+// Used two button open and close and handle the pop-up in HTML,JS
+
+// (7) 
+// Make array element of uniquer array 
+// Input : [1, 2, 2, 3, 4, 4]
+// Output : [1,2,3,4]
+
+
+// (8)
+// - event bubbling 
+// - filter, reducer method questions
+// - what new Set()
+// - polyfills,debounce,throttle
+// - clouser 
+// -recolcinations in raact
+// - Virtual dome in react
+// - Types of component in react
+// - Life cycle method for both class & function component
+// - React which architechtuer used to make websites ?
+// - Redux in react
+// - what is nodejs 
+// - cors policy in nodejs
+
+// - Introuduce your self
+// - Tell me about prief introduction what you done in ur expereince
+
+
+// - Waht is ur big or difficult task to handle any error
+1. crash issue in a React login page (undefined response object from the backend.)
+- taught me the importance of defensive coding, handling API errors gracefully, and making sure the app doesn’t crash even when the backend fails.
+
+2. route mismatch
+- checked network requests, console errors, and CORS configurations
+
+3. UI wasn’t updating even after state changes.
+- I fixed it by avoiding direct state mutation and properly using the setState/useState setter.
+
+4. React dashboard ::> Performance Optimization (Re-renders)
+- I optimized it using React.memo, useCallback, and useMemo to cache values and prevent re-renders.
+
+
+Why do you want to leave your current company?
+I learned a lot at The Salt Inc., but now I want to work on larger-scale products where I can apply my MERN skills, learn from experienced teams, and grow further.

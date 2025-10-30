@@ -1,0 +1,694 @@
+React informatio
+-----------------
+React Interview Prep Topics - Media.net R1 (UI Developer)
+
+--------------------------------
+React Core Concepts
+--------------------------------
+- Virtual DOM → Lightweight copy of real DOM for faster UI updates.
+
+
+--------------------------------
+React Hooks
+--------------------------------
+- useState → Manage local component state.
+- useEffect → Side effects (API calls, event listeners, cleanup).
+- useRef → Access DOM nodes, persist values across renders.
+- useMemo → Memoize values to avoid recalculation.
+- useCallback → Memoize functions to prevent re-creations.
+- useContext → Consume global context.
+- Custom Hooks → Reusable logic across components.
+
+--------------------------------
+Performance & Optimization
+--------------------------------- How React works → Uses Fiber architecture & diffing for efficient rendering.
+- Reconciliation Engine → Compares old vs new Virtual DOM & updates only changed parts.
+- JSX & Babel → JSX is syntacti	c sugar, transpiled to JS via Babel.
+- Lifecycle → Before Hooks (class-based) vs With Hooks.
+- Controlled vs Uncontrolled Components → Controlled tied to state, uncontrolled uses refs.
+- Keys → Identify list items, avoid re-render issues.
+- Prop Drilling → Passing props deeply; solved with Context API.
+- Error Boundaries → Catch JS errors in components.
+- React.memo → Prevent unnecessary re-renders.
+- Lazy Loading → Code splitting using React.lazy + Suspense.
+- Memory Leak → Caused by unmounted comps still using async/events. Fix with cleanup in useEffect.
+- useLayoutEffect vs useEffect → useLayoutEffect runs synchronously after DOM mutations.
+- Debouncing/Throttling → Optimize frequent events (scroll, input).
+
+--------------------------------
+State Management
+--------------------------------
+- Redux → Store, Actions, Reducers, Middleware.
+- Redux Toolkit → Simplified Redux setup (createSlice, createAsyncThunk).
+- Context API → Simple state sharing across tree.
+- useReducer → Alternative to useState, better for complex state.
+- Flux Architecture → One-way data flow.
+
+--------------------------------
+Advanced React
+--------------------------------
+- SSR & Hydration → Server renders HTML, React hydrates on client.
+- React 18 Features → Automatic batching, concurrent rendering, useTransition.
+- React Router v6 → useNavigate, useParams, nested routes.
+- Error Handling → Fallback UI with Error Boundaries.
+
+--------------------------------
+Testing in React
+--------------------------------
+- Jest → Unit testing framework.
+- React Testing Library → Tests components by simulating user behavior.
+- Unit vs Integration → Small isolated tests vs multiple components together.
+
+--------------------------------
+Common Interview Qs
+--------------------------------
+- Why use useCallback?
+- What happens if keys are missing in lists?
+- How to avoid unnecessary re-renders?
+- Difference: Redux vs Context API?
+- How to detect/fix memory leaks?
+
+
+
+Reactr interview Questions : https://youtu.be/U9sDK8zTJ8Y?si=iQRnjgpd1hC4gaT5
+
+
+In html,css & js 
+----------------
+- Every click triggers a real DOM manipulation.
+- Real DOM updates are expensive — they reflow and repaint the UI. 
+- Becomes slow and inefficient.
+
+-------------
+VirtuaL Dome 
+-------------
+-> so solved by react by creating virtual dom (never directly update the main DOM )
+-> VD is in memory lightweight copy of the real dome which is used to compute updates efficiently and minimize direct DOM manipulations.
+
+
+Working
+1.Initial render — React converts JSX → VDOM tree and mounts it to the real DOM -> real DOM (webbrowser)
+2.Update — On state/props change, React produces a new VDOM.
+3.Diffing (reconciliation) — React compares old VDOM vs new VDOM to find differences.
+4/5 -> Update only changed parts in Real DOM
+4.Patching — React applies a minimal set of DOM mutations to sync the real DOM to the new VDOM.
+5.Commit phase — Lifecycle/hooks run and browser paints.
+
+Key concepts to mention (interview checklist)
+-> Reconciliation — process of diffing VDOM and updating Real DOM.
+-> Diffing heuristics:
+Compare trees by node type; if type differs, React replaces the subtree.
+-> For lists, use keys to identify items — wrong keys cause expensive re-renders or lost state.
+-> Keys — stable unique identifiers for list items (key prop).
+-> Batching 
+	— React groups multiple state updates together and applies them in a single re-render,
+	  instead of doing one render for every update (reduce re-renders)
+	  
+-> Fiber — React’s reconciliation architecture that supports incremental rendering and prioritization (good to name-drop; avoid deep internals unless asked).
+-> PureComponent / React.memo / shouldComponentUpdate — ways to avoid unnecessary re-renders.
+-> Immutable updates — helps VDOM diffing be efficient (mutating state in place breaks change detection logic).
+
+-> When would VDOM not help performance?
+If you have very large trees and you cause many deep updates, diffing itself can be costly. 
+In such cases, optimize with shouldComponentUpdate/React.memo, virtualization 
+(e.g., react-window), or move heavy work outside render.
+
+->
+| Feature                   | Works With         | Purpose                          | Comparison    |
+| ------------------------- | ------------------ | -------------------------------- | ------------- |
+| **PureComponent**         | Class component    | Auto shallow compare props/state | Shallow       |
+| **React.memo**            | Function component | Skip re-render if props same     | Shallow       |
+| **shouldComponentUpdate** | Class component    | Manual control over re-render    | Custom        |
+| **useMemo**               | Function component | Memoize expensive calculation    | Based on deps |
+
+->
+PureComponent → Class | Auto shallow props/state check.
+React.memo → Function | Auto shallow props check.
+shouldComponentUpdate → Class | Manual re-render control.
+useMemo → Function | Memoize expensive values, recompute on deps change.
+
+->
+PureComponent & React.memo prevent re-renders (UI level), 
+shouldComponentUpdate gives manual control, and useMemo optimizes heavy calculations (logic level).
+
+
+Fiber in React
+--------------
+Definition:
+-> powers the React rendering system
+-> Fiber is React’s reconciliation engine (from React 16) that breaks rendering into small units of work.
+
+Why used:
+- Old React reconciliation was synchronous & blocking.
+- Fiber allows:
+   • Interruptible rendering (pause/resume/abort work).
+   • Scheduling & prioritization of updates.
+   • Keeps UI responsive during heavy updates.
+
+
+
+
+
+JSX & Babel
+-----------
+
+JSX:
+- JSX (JavaScript XML) is a syntax extension for JavaScript that lets you write HTML-like code inside JavaScript.
+- Makes UI code more readable & declarative.
+
+Babel:
+- JavaScript compiler.
+- Transpiles JSX → plain JavaScript.
+- Example:
+   JSX:  <h1>Hello</h1>
+   JS :  React.createElement("h1", null, "Hello");
+
+
+
+
+
+Old react: npx create-react-app my-app
+new react : npx create-react-app@latest my-app
+
+React Lifecycle
+---------------
+React components go through mounting, updating, and unmounting phases. 
+Class components use lifecycle methods like componentDidMount, componentDidUpdate, and componentWillUnmount, 
+while function components use useEffect to handle all these phases.
+
+
+Phases:
+1. Mounting → When component is being created & inserted into the DOM.
+2. Updating → When props/state change, causing re-render.
+3. Unmounting → When component is removed from DOM.
+
+✅ Key Points
+- Lifecycle is automatic and built into React.
+- Helps you manage state, side effects, and cleanup.
+- Class components have methods, functional components use hooks.
+
+Mounting (when component is created & added to DOM):
+- constructor() -> run before initial render initalize some state
+- getDerivedStateFromProps() -> run before initial render
+- render()  -> render the DOM
+- componentDidMount() -> after render
+work :
+------
+On initial render, React calls constructor, then getDerivedStateFromProps, 
+then render, and finally componentDidMount where we usually fetch data or start side effects.”
+
+
+Updating (when props/state change):
+- getDerivedStateFromProps()  ->  Runs whenever props/state changes (before render)
+- shouldComponentUpdate() -> Decide whether component should re-render
+- render() -> Renders the Virtual DOM again
+- getSnapshotBeforeUpdate() ->  Capture information from DOM before update
+- componentDidUpdate() ->  Runs after DOM   
+  ex: componentDidUpdate(prevProps, prevState, snapshot)
+
+Unmounting (when component is removed from DOM):
+- componentWillUnmount() ->  Cleanup work before component is removed
+  Ex: remove event listeners, cancel API calls, timers etc
+
+Function Components (with Hooks):
+- useEffect(() => { ... }, [])          // Mount (runs only once)
+- useEffect(() => { ... }, [deps])      // Update on at specific change 
+- useEffect(() => { ... })       // Update on at all change (render always on chnages)
+- useEffect(() => { return () => {...} }, [])  // Unmount (cleanup)
+
+
+| **Class Component**    | **Functional Component**           |
+| ---------------------- | ---------------------------------- |
+| `componentDidMount`    | `useEffect(() => {}, [])`          |
+| `componentDidUpdate`   | `useEffect(() => {}, [deps])`      |
+| `componentWillUnmount` | `return () => {}` inside useEffect |
+
+note
+-----
+- Before hooks, React used class-based lifecycle methods like componentDidMount, componentDidUpdate and componentWillUnmount. 
+- With hooks, functional components use useEffect to handle mounting, updating, and cleanup in a cleaner, more reusable way.”
+- Functional components are simpler, easier to read/write, and with hooks, they can handle state,side effects and cleanup.
+
+------------------------------------------------
+Controlled Component & Uncontrolled Component
+------------------------------------------------
+- A controlled component is a form input element whose value is controlled by React state.
+- give more control on validateing,manipulatint and reset the input.
+- const [name, setName] = useState("");
+
+- An uncontrolled component is a form input element whose value is handled by the DOM itself, not by React state.
+- const nameRef = useRef();
+
+| Feature              | Controlled Component                              | Uncontrolled Component                                            |
+| -------------------- | ------------------------------------------------- | ----------------------------------------------------------------- |
+| State Management     | Form data controlled by React state               | Form data managed by the DOM itself                               |
+| Value Handling       | `value` prop tied to `useState` or `this.state`   | `defaultValue` or `ref` to access value                           |
+| Updates              | Updates via `onChange` handler                    | Updates read directly from DOM via `ref`                          |
+| Example              | `<input value={value} onChange={handleChange} />` | `<input defaultValue="text" ref={inputRef} />`                    |
+| Validation / Control | Easier to validate or enforce rules               | Harder to control or validate                                     |
+| When to Use          | Recommended for React forms (more predictable)    | Quick forms, third-party libraries, or simple uncontrolled inputs |
+
+
+
+
+
+
+--------------------------------
+React Hooks 
+--------------------------------
+-> A Hook in React is just a function that lets you use features like state and lifecycle inside functional components.
+mport { useEffect, useState, useRef } from "react";
+
+(1) useState
+- Is a React Hook that allows you to add state to functional components.
+  It lets your component remember values between renders.
+- onClick={() => setCount(prev => prev + 1)}  or onClick={() => setCount(count+1)} ::> setState triggers re-render.
+- React doesn’t re-render the whole page, only the component with updated state and its children.
+
+
+(2) useEffect
+- Is a React Hook that lets functional components perform side effects after rendering. 
+  - Ex:(API calls,DOM updates,setting timers).
+- Dependencies array decides when it runs ::> [] → run once, [dep] → on change, no dep → every render.
+- Also used to prevent memory leaks by Cleanup  code.
+
+(3) useRef
+- Used to create variable that value/referenc of dom persist across the re-render(by state chnages)
+- useRef does not cause re-render when its value changes. (but state change do)
+- EX: timer (for clearinterval) start,stop,reset
+-> let htmlRef=useRef(0); 
+	- retutn object,which contain current=0 vairbale 
+	- htmlRef is pointing to this object and used htmlRef.current.
+-> <tag ref={htmlRef}> <tag/>
+-> htmlRef.current.style.backgroundColor = "red"
+
+
+memo (same as useMemo) (memoizing the function component)
+---------------------------------------------------------
+- React.memo is a higher-order component (HOC) that prevents 
+   unnecessary re-renders of functional components when their props haven't changed.
+- Optimizes performance by avoiding re-rendering of components when props are unchanged.
+- Commonly used in lists, child components, or heavy computations.
+
+- Ex.
+	import {memo } from "react";
+	const Child =({name}:{name:any})=>{
+		console.log("child component rendered....");
+		return(
+			<>
+			<p>child {name} element...</p>
+			</>
+		);
+	}
+	const MemoizedChild = memo(Child);
+	
+Explanation:
+- Clicking “Increase Count” re-renders Parent
+- MemoizedChild does not re-render because name prop didn’t change
+- Console shows “Child rendered” only once
+
+
+
+(4) useMemo (easy to read as memo)(memoize the value)
+-> It is react hook and used to optimize performance by caching the results of expensive function calls.
+-> syntax same as useEffect
+const memoizedValue = 	useMemo(() => computeExpensiveValue(), []);   -> computeExpensiveValue return value only once
+const memoizedValue = 	useMemo(() => computeExpensiveValue(), [state1]);   -> run if state1 is update (not depend on other state updation)
+  
+  import React, {useMemo } from "react";
+  const factorial = (n: number) => {
+    console.log("Calculating factorial...");
+    return n <= 0 ? 1 : n * factorial(n - 1);
+  };
+
+  // Memoize factorial to avoid recalculating on every render
+  const fact = useMemo(() => factorial(num), [num]); // num is state variable
+  
+
+
+(5) useCallback (memoizing the funciton )
+-> It is React Hook and used to memoizing the funciton reference by making stable reference
+-> At every render fucntion is created and get new memory location if mehthod is static than kept as useCallback.
+-> Syntax
+	const memoizedFunction = useCallback(() => { ... }, [dependencies]);
+	-> with arrow fucntion
+	const increment = useCallback(() => {
+	  setCount((prev) => prev + 1);
+	}, []);
+
+	-> with normal function
+	const increment = useCallback(function () {
+	  setCount((prev) => prev + 1);
+	}, []);
+
+-> useCallback is used with memo
+React.memo skips re-render if props don’t change, but functions are recreated on every render. 
+Using useCallback memoizes the function, keeping its reference stable, so memoized children don’t re-render unnecessarily.
+
+
+(6) useContext
+-> useContext is a React Hook that lets functional components consume values from a global Context without using prop drilling. 
+-> Context is used to share data across the component tree without prop drilling.
+-> Step:
+	1. createContext() : A function Create context object
+	2. Provider 	   : A component taht provide context value to its children 
+	3. useContext()    : A hook allow to use context (consumer).
+-> import React, { createContext, useContext } from "react";
+
+
+React Context API
+-----------------
+1. Create Context
+   const AppContext = createContext();  // return component object so name is uppercase MyContext
+
+2. Provide Context
+   <AppContext.Provider value={{ theme, setTheme, count, setCount, increment }}>
+      {/* child components */}
+   </AppContext.Provider>
+
+3. Consume Context (Functional Component)
+    const { theme, setTheme, count, increment } = useContext(AppContext);
+	 
+-> URL : https://youtu.be/QEEz11ubRbs?si=2CSJzX5h9ojMKM_W	
+
+-> Context API vs Redux
+| Use Case             | Context                      | Redux                               |
+| -------------------- | ---------------------------- | ----------------------------------- |
+| Scope                | Small/medium component trees | Large apps with complex state       |
+| State type           | Light state (theme, auth)    | Complex state, multiple slices      |
+| Frequency of updates | Low/medium                   | High updates                        |
+| Middleware/DevTools  | No built-in                  | Yes, supports middleware & devtools |
+
+
+
+(7) useReducer (Extended version of useState)
+- When lot of useState in single compont mange is difficult task so we need to used useReducer for readability/maintability
+- useReducer is a React hook used for managing complex state logic in functional components. 
+  It works by dispatching actions to a reducer function, which returns the new state. 
+  It is especially useful when multiple state variables are related or when state updates depend on the previous state
+
+	
+- 
+	import React, { useReducer } from "react";
+	function reducer(state, action) {
+	  switch(action.type) {
+		case "increment":
+		  return { ...state, count: state.count + 1 };
+		case "decrement":
+		  return { ...state, count: state.count - 1 };
+		default:
+		  return state;
+	  }
+	}={
+	const initialState={count:0};
+	const [state, dispatch] = useReducer(reducer, initialState);
+	<button onClick={() => dispatch({ type: "INCREMENT" })}>+</button>
+	
+	
+- State management :> Local component-level and for global level we use context API or Redux Toolkit
+- Analogy
+	useReducer → Local “mini Redux” for a single component.
+	context API/Redux Toolkit → component tree scoped
+	
+	
+------------------------------
+Performance & Optimization
+--------------------------------
+-> Both laszy loading & code splitting are used to improve the performance of react application
+
+(1) Lazy Loading
+-> Lazy Loading means loading components or resources only when needed, instead of loading all things.
+-> Helps in performance optimization → smaller initial bundle, faster page load.
+-> faster page load time due less bundle size
+
+👉 How? ::>
+1. React.lazy() → dynamic import for components.
+2. Suspense → fallback UI while loading.
+
+
+👉 Example ::> on button click  const [load,setLoad]=useState(false);
+import {lazy,Suspense} from 'react';
+const LazyComponent  = lazy(() => import("./Profile"));
+{ load ? <Suspense fallback={<p>Loading...</p>}> <LazyComponent/> </Suspense> :null}
+
+
+
+(2) Code Splitting same as 
+-> Breaking your application bundle into smaller chunks instead of shipping one big JS file.
+-> Browser loads only the required chunks when needed → improves load time.
+-> Achieved using dynamic imports or tools like Webpack, Vite.
+-> both lazy loading and code splitting have same example
+
+(3)useEffect
+-> React component phase 
+	1. Initialization
+	2. Mounting  -> come in window view
+	3. Updation  -> state updted etc
+	4. Unmounting  -> out from window view (by screen close or url navigation)
+-> Used to perform task between component life-cycle
+-> Runs asynchronously and after a render is painted to the screen. 
+-> Browser paints UI → then useEffect runs.	
+
+  # Mount
+  useEffect(() => {
+    console.log("Component Mounted");
+
+    # Unmount
+    return () => {
+      console.log("Component Unmounted");
+    };
+  }, []);
+  
+  # Update (first previou ui unmoutn thant useEffect run & update with new UI)
+  useEffect(() => {
+    console.log("Count Updated:", count);
+  }, [count]);
+  
+  
+  
+(4)useLayoutEffect (same syntax as useEffect)
+-> Runs synchronously  after a render but before the screen is updated.
+-> it rund sync (blocking flow) so not mostly used (in 99% cases)(we prefer useEffect)
+-> it is used when need to run somethihg before showing in screen
+
+(5) Memory Leak
+-> Memory leaks occur when async ops or events update state after unmount.We fix it using cleanup functions inside useEffect
+-> for example, clearing intervals, unsubscribing events, or canceling fetch requests."
+
+👉 Examples
+-----------
+1. Timer
+useEffect(() => {
+  const id = setInterval(() => console.log("tick"), 1000);
+  return () => clearInterval(id); // cleanup
+}, []);
+
+2. Event Listener
+useEffect(() => {
+  window.addEventListener("resize", resizeHandler);
+  return () => window.removeEventListener("resize", resizeHandler);
+}, []);
+
+3. Fetch (ignore if unmounted)
+useEffect(() => {
+  let isMounted = true;
+  fetch("/api").then(res => res.json()).then(data => {
+    if (isMounted) setData(data);
+  });
+  return () => { isMounted = false; };
+}, []);
+
+
+(6) Debouncing
+-> fire event when user is inactive
+-> Waits until user stops triggering the event, then executes.
+-> Example: typing in a search bar → API call only after user stops typing for 500ms.
+-> Prevents firing function multiple times in quick succession.
+	function debounce(fn, delay) {
+	  let timer;
+	  return function (...args) {
+		clearTimeout(timer);
+		timer = setTimeout(() => fn.apply(this, args), delay);
+	  };
+	}
+
+	// Usage
+	const handleSearch = debounce((e) => {
+	  console.log("API Call:", e.target.value);
+	}, 500);
+
+	<input onChange={handleSearch} />
+
+(7) Throttling
+-> fire event in specific interval 
+-> Executes function at fixed intervals, ignoring extra triggers within that interval.
+-> Example: scroll event → update position every 200ms, not on every pixel.
+	function throttle(fn, limit) {
+	  let inThrottle;
+	  return function (...args) {
+		if (!inThrottle) {
+		  fn.apply(this, args);
+		  inThrottle = true;
+		  setTimeout(() => (inThrottle = false), limit);
+		}
+	  };
+	}
+
+	// Usage
+	const handleScroll = throttle(() => {
+	  console.log("Scroll event triggered");
+	}, 200);
+
+	window.addEventListener("scroll", handleScroll);
+
+
+👉 Interview Answer
+Debounce → "Group many events into one execution (after delay)."
+Throttle → "Guarantee execution at regular intervals."
+
+👉 React Tip
+Use debounce/throttle to optimize performance-heavy event handlers.
+
+React Performance & Optimization - Keywords
+- Lazy Loading: React.lazy(), Suspense, Route-based splitting
+- Code splitting
+- Memoization: React.memo, useCallback, useMemo
+- Memory leak :  cleanup funciton by useEffect
+- Optimize Assets: compressed images, lazy <img>
+- Debounce / Throttle: lodash.debounce, lodash.throttle
+- Optimize Context / Redux: selectors, useMemo, Redux Toolkit (RTK)
+
+
+
+--------------------------------
+State Management
+--------------------------------
+(1) useState -> for small state manage (component level)
+(2) useReducer → Alternative to useState, better for complex state.(component level)
+
+(3) Redux  (component tree level)
+-> A state management library for JavaScript apps (often React).
+-> Central store holds the global state.
+-> In small apps, React state is enough. But in larger apps, passing state through many components becomes complex. 
+   Redux solves this by providing a single centralized store that any component can read from or update.
+-> Redux is a state management tool for large React apps. 
+   It stores all data in a single centralized store, making it easier to share and update state across components.
+   
+-> How redux works?
+1. Store : place where redux keep all data
+2. Action : (it is an object) tell redux what to do (CRUD operation)
+	ex:
+	{
+		type:"counter/increment",
+		payload:{incrementBy:10}
+	}
+
+3. Reducers : update stored data based on action
+	ex:
+	export const counterReducer = (state = initialState, action) => {
+	  switch (action.type) {
+		case "counter/add": return { ...state,value: state.value + action.payload.incrementBy};
+		default: return state;
+	  }
+	};
+
+
+Advantage:
+-----------
+-> Centralized state management -> easy to access & updated across component
+-> Global access  -> any component can access & updated without passing props down 
+-> Predictable updates -> state chnages are predictable & controlled by reducers
+-> DevTools -> poweful tools for debugging,inspecting state and replaying actions.
+-> Async Support -> middleware like  thunk or saga handled async task
+
+
+Redux:reducer function 
+----------------------
+-> it decides how the state change based on action
+-> Reducer → A pure function that takes current state + action → returns new state.
+👉 Always return a new state
+👉 Never mutate(update) the old state
+
+
+(4) Redux Toolkit
+-> helper function of redux (less time and less code than redux)
+Terms
+-------
+1.Actions  -> event type info + additinal info(payload)
+ex : { type: "todos/addTodo", payload: "Learn Redux" }
+
+2.Slice -> collection of features (reducer funtion ) w.r.t corresponding initialstatew
+👉 Slice = Initial State + Reducers (functions) + Auto-generated Actions
+
+3.Reducer  -> function used chnage state based on action
+4.Store  -> collection of data(state) , holds the global application state
+5.State -> data placed in store
+
+note : In React Router, <Outlet /> is a special component used to render child routes inside a parent route.
+
+
+// steps: Redux Toolkit 
+// s1: create store   -> configureStore({reducer:{}})
+
+// s2: wrap app component under Provider
+// import { Provider } from "react-redux";
+// import { store } from "./redux/store";
+
+// s3: create Slice -> createSlice(naem,initialState,reducers:{})
+
+// s4: register reducer in store
+// import counterReducer from "../features/counter/counterSlice";
+// reducer: {
+//     counter:counterReducer
+//   },
+
+// s5: access in any page need to import belwo things
+// import { useDispatch, useSelector } from "react-redux";
+// import { increment,decrement } from "../features/counter/counterSlice";
+// access state by useSelector hook
+// execute the reducer funciton used useDispatch hook
+
+
+-> Redux is the core library with more boilerplate, while Redux Toolkit is the modern, 
+   official abstraction that simplifies Redux usage with less code and built-in best practices.
+   
+-> Read the code 
+
+
+
+API CALLES 
+----------
+
+1. AXIOS
+  useEffect(() => {
+    // Async function to fetch data
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("https://jsonplaceholder.typicode.com/posts");
+        setData(response.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData(); // Call the async function
+  }, []);
+  
+2. Fetch 
+---------
+  // ✅ Fetch API using async/await
+  const fetchData = async () => {
+    try {
+      const res = await fetch("https://jsonplaceholder.typicode.com/users"); // API URL
+      const result = await res.json(); // Convert response to JSON
+      setData(result); // Update state
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
