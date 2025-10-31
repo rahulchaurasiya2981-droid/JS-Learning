@@ -2,6 +2,19 @@ React informatio
 -----------------
 React Interview Prep Topics - Media.net R1 (UI Developer)
 
+React
+Virtual DOM
+hooks
+useState 
+useRef
+useEffect
+how react works
+reconillation engine
+useMemo
+useCallback
+Memory Leak
+redux concepts
+
 --------------------------------
 React Core Concepts
 --------------------------------

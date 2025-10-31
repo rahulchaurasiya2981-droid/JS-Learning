@@ -1,25 +1,12 @@
-const items = [
-  { category: "Clothing" },
-  { category: "Electronics" },
-  { category: "Clothing" },
-  { category: "Shoes" },
-  { category: "Electronics" }
-];
+console.log("Start");
 
+setTimeout(()=>{
+    console.log("CB SetTimeout");
+},5000)
 
+fetch('https://api.netflix.com')
+.then(function cbF(){
+    console.log("CB Netflix");
+}) 
 
-const obj=items.reduce((acc,obj)=>{
-    
-    if(acc[obj.category])
-    {
-        
-        acc[obj.category]=acc[obj.category]+1;
-        
-    }
-    else{
-        acc[obj.category]=1;
-    }
-    return acc;
-},{})
-
-console.log(obj)
+console.log("End")
