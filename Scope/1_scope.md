@@ -5,7 +5,7 @@ Types :
 1. Global Scope
 2. Function scope 
 3. Block scope 
-
+4. Lexical scope
 
 1. Global Scope 
 - Variable declared outside any function or block and accessible throughout the entire program.
@@ -15,3 +15,5 @@ Types :
 
 3. Block Scope 
 - Variable declared with let & cosnt inside a block {} are accessible only within that block.
+
+4. Lexical scope

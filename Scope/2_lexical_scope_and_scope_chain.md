@@ -1,5 +1,6 @@
 Lexical environement (lexial scope)
 ------------------------------------
+- lexical environment = a code which is physically placed inside the code
 - Scope is directly related to lexical scope (lexical environment)
 - Lexical environement = current lexical env. `+` reference to lexical env. of parent 
 - Lexical env. = local memory `+` reference to lexical env. (local memory) of parent
