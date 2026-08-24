@@ -1,5 +1,6 @@
 - A variable is a named container to store data.
 - Variable name should be in cammel case and not start with number and special symbol
+- Variable name should be meaning full
 
 Types of Variable Declarations
 ------------------------------
@@ -35,7 +36,13 @@ for (let i = 0; i < 3; i++) {
 3. const 
 - Block scoped
 - Can't be redeclared & updated but check below
+- "address can't change but data on that address we can change"
+- const creates an immutable binding (reference), not an immutable object.
+- This binding cannot be reassigned after initialization.
 ```js
+const a=10;
+a=20; // Not Allowed cause we changing or assigning new reference to a variable of memorblock of 20 value 
+
 const obj = { name: "Rahul" };
 obj.name = "Boss"; // ✅ Update Allowed
 
