@@ -1,5 +1,5 @@
-Operator in js
----------------
+# Operator in js
+------------------
 - An operator is a symbol or keyword that tells JavaScript to perform a specific operation on one or more operands
 - Operators can be unary, binary, or ternary depending on the number of operands they operate on.”
 ```js
@@ -17,11 +17,11 @@ condition ? "yes" : "no"
 - operator = "+"    
 
 
-Types :
---------
+# Types :
+----------
 
-1. Arithmetic Operators 
----------------------
+## 1. Arithmetic Operators 
+----------------------------
 - Used for mathematical operations.
 
 | Operator | Meaning        |
@@ -36,8 +36,8 @@ Types :
 - `%` : Give remainder after division
 - `**`: `2 ** 3 = 2³ = 2 × 2 × 2 = 8` → `a ** b = aᵇ` → a raised to the power of b.
 
-2. Assignment Operators 
-------------------------
+## 2. Assignment Operators 
+---------------------------
 - An operator that assigns a value or expression result to a variable.
 - The basic assignment operator is =, and JavaScript also provides compound assignment operators like +=, -=, *=, /=, %=, and `=` that perform an operation and then assign the result back to the same variable.**
 - Logical Assignment Operators (ES2021) = (&&=,||=,??=)
@@ -73,8 +73,8 @@ console.log(a%=b); // a=a%b = 1%2 = 1
 console.log(a**=b); // a=a**b = 1**2 = 1^2 = 1
 ```
 
-3. Comparison Operators
--------------------------
+## 3. Comparison Operators
+----------------------------
 - Comparison operators compare values and return a boolean.
 ```js
 >    greater than
@@ -111,8 +111,8 @@ console.lopg(typeof NaN);           // number
 console.log(Number.isNaN(NaN));     // true
 ```
 
-4. Logical Operators
-----------------------
+## 4. Logical Operators
+-------------------------
 1. AND && = Both conditions must be truthy.
 2. OR || = At least one conditon must be truthy.
 3. ! = Flips the boolean value (!true = false)
@@ -219,7 +219,7 @@ console.log(!undefined); // !Boolean(undefined) = !false = true
 console.log(!NaN);       // !Boolean(NaN) = !false = true
 ```
 
-5. Nullish Coalescing ??
+## 5. Nullish Coalescing ??
 ---------------------------
 - This operator is similar to ||, but importantly different
 - left ?? right = returns the right side only when the left side is:null/undefined
@@ -265,14 +265,14 @@ const finalVolume = volume ?? 50;
 console.log(finalVolume); // 0 ✅
 ```
 
-6. Unary Operators
+## 6. Unary Operators
 --------------------
 - A operator that performs an operation on a single operand is called UO.
 - Ex: ~,!,+,-,++,--,typeof,delete,void
 - For example, in typeof x, typeof is the unary operator and x is its single operand.
 
-1. Unary `+`
--------------
+### 1. Unary `+`
+----------------
 - this operator used to convert value into number. 
 - The unary + operator performs `numeric coercion`. For objects, JavaScript first tries to convert the object into a primitive value, and then converts that primitive to a number.
 
@@ -367,8 +367,8 @@ String([null/undefined])     // ""(empty string) = cuase String internally using
 [NaN].join() // "NaN"
 ```
 
-2. Unary `-`
--------------
+### 2. Unary `-`
+------------------
 - Same as `+` just after nunber it will negate that number.
 
 ```js
@@ -391,8 +391,8 @@ console.log(-[undefined]); // -0
 
 ```
 
-3. Increment `++` (Same rule as 4. Decrement `--`)
--------------------------------------------
+### 3. Increment `++` (Same rule as 4. Decrement `--`)
+--------------------------------------------------------
 - The `++` operator increases a value by 1.
 ```js
 let x=1;
@@ -415,7 +415,7 @@ let y= x++;
 console.log(x) // 2
 console.log(y) // 1
 ```
-# Note : ++ and + 
+####  Note : ++ and + 
 - `++` performs `numeric conversion` and `increments` the value
 - `+` is special because it can mean `addition` OR `string concatenation`.
 ```js
@@ -426,8 +426,8 @@ console.log("10" + 1)   // "101"
 ```
 
 
-5. Logical NOT `!`
--------------------
+### 4. Logical NOT `!`
+----------------------
 - `!` converts a value to `Boolean` and then `reverses` it.
 - 0, null, undefined, "", NaN, and false are falsy.
 ```js
@@ -441,8 +441,8 @@ console.log("10" + 1)   // "101"
 !false      // true
 ```
 
-6. Double NOT `!!`
------------------
+### 5. Double NOT `!!`
+----------------------
 - `!!` is technically two unary ! operations.
 - It is commonly used to convert a `value into a Boolean`.
 - `!!` is used to `explicitly` convert a value into a Boolean when I need a reliable true or false value
@@ -462,7 +462,8 @@ console.log("10" + 1)   // "101"
 3. Don't use it when the value is already a Boolean.
 
 
-7. `typeof`
+### 7. `typeof`
+----------------
 - return type of value
 ```js
 console.log(typeof "rahul");    // "string"
@@ -478,7 +479,8 @@ console.log(typeof undefined);  // "undefined"
 console.log(typeof NaN);        // "number"
 ```
 
-8. `delete`
+### 8. `delete`
+-----------------
 - used to remove property in object
 ```js
 const user={
@@ -490,8 +492,8 @@ delete user?.age; // delete is operator and user?.age is operands
 console.log(user) // { name: 'rahul' }
 ```
 
-9. `void`
----------
+### 9. `void`
+--------------
 - `void` evaluates an expression and `returns undefined`.
 - It's `rarely` needed in everyday application code, but it can be used when I intentionally want to ignore a return value or in some JavaScript expression patterns.
 ```js
@@ -506,16 +508,16 @@ void function () {
 }();
 ```
 
-10. Bitwise NOT `~`
----------------------
+### 10. Bitwise NOT `~`
+-----------------------
 - `~` is a unary bitwise operator.
 - It performs bitwise NOT on the number.
 - ~ works on the 32-bit integer representation of a number and flips its bits.
 - Formula : `~x = -(x + 1)`
 
 
-7. Bitwise Operators
-----------------------
+## 7. Bitwise Operators
+------------------------
 - Bitwise operators work on the binary representation of integers.
 - JavaScript Number is normally a 64-bit floating-point value, but when you use a bitwise operator, JavaScript converts the value to a 32-bit signed integer, performs the operation, and converts the result back to a Number.
 
@@ -542,8 +544,8 @@ console.log(-5 >> 1) // -3
 ```
 
 
-8. Ternary Operator `(?:)`
--------------------------
+## 8. Ternary Operator `(?:)`
+------------------------------
 - The operator which is used 3 operands to perform operation is called TO (?:)
 - The ternary operator is a compact conditional expression.
 ```js
@@ -562,8 +564,8 @@ console.log(age>=18 ? "Adult" : "Minor")
 {isLoggedIn ? <Dashboard /> : <Login />}
 ```
 
-9. Optional Chaining `?.`
---------------------------
+## 9. Optional Chaining `?.`
+------------------------------
 - modern js feature
 - Try to access this. If the value before ?. is `null or undefined`, `stop` and `return undefined` instead of `throwing an error`.
 - Allows you to `safely access a property, method, or element` when something might be null or undefined.
@@ -589,8 +591,8 @@ const user={}
 console.log(user.profiles?.name); // return undefined instead error and execute the below action
 console.log("next action of application") 
 ```
-a. Optinal Property Access
---------------------------
+### a. Optinal Property Access
+-------------------------------
 ```js
 const user={
     name:"rahul"
@@ -603,8 +605,8 @@ const user=null // or undefined
 console.log(user.name)    // TypeError: Cannot read properties of undefined (reading 'name')
 ```
 
-b. Optional Function Call 
--------------------------
+### b. Optional Function Call 
+------------------------------
 - If login exists and is callable, call it. Otherwise return undefined.
 ```js
 const user = null;
@@ -632,8 +634,8 @@ console.log(user?.login?.())
 // undefined
 ```
 
-c. Optional Array Access
--------------------------
+### c. Optional Array Access
+------------------------------
 - Useful when an array may not exist.
 ```js
 const user = [ { name: "Rahul" }];
@@ -645,8 +647,8 @@ const user=null //undefined
 console.log(user?.[0]) // undefined
 ```
 
-d. Optional Chaining
----------------------
+### d. Optional Chaining
+--------------------------
 - The chain stops when it encounters null or undefined.
 - You can chain it : `user?.profile?.address?.city`
 - `Syntax : object?.property`
@@ -657,8 +659,8 @@ const user = {
 console.log(user?.profile?.name); // undefined
 ```
 
-e. Nullish Coalescing `??` + Optional Chaining `?.`
-----------------------------------------------------
+### e. Nullish Coalescing `??` + Optional Chaining `?.`
+------------------------------------------------------
 - we can use this two together 
 - Use 1 :
 ```js
@@ -683,18 +685,21 @@ const user = {
 const name = user?.name || "Guest";
 console.log(name);  // "Guest"
 ```
-# Note : (OC)(?.) + (NO)(??) + (LOR)(||)  = this 3 combination is better to used
+####  Note : (OC)(?.) + (NO)(??) + (LOR)(||)  = this 3 combination is better to used
+
 - OC (`?.`)
- →  Use when a property/method may be `null` or `undefined`.
- →  Safely access nested data without throwing an error.
-- NO (`??`) 
- → Use when you want a default value only when the value is null or undefined
-- LOR (`||`) 
- → Use when you want a fallback for any falsy value.
- → Falsy values include 0, false, "", null, undefined, and NaN.
+→  Use when a property/method may be `null` or `undefined`.
+→  Safely access nested data without throwing an error.
+
+- NO (`??`)
+→ Use when you want a default value only when the value is null or undefined
+
+- LOR (`||`)
+→ Use when you want a fallback for any falsy value.
+→ Falsy values include 0, false, "", null, undefined, and NaN.
 
 
-10. `in` Operator
+## 10. `in` Operator
 --------------------
 - Check whether a property exists in an object.
 - returning boolean value
@@ -709,8 +714,8 @@ console.log("email" in user) // false
 console.log("toString" in user) // true because inherited properties can count.
 ```
 
-11. `instanceof` Operator
---------------------------
+## 11. `instanceof` Operator
+-----------------------------
 - Checks whether an object is associated with a constructor's prototype chain.
 - It is commonly used when you need to distinguish object instances.
 - return Boolean value
@@ -722,26 +727,26 @@ const date = new Date();
 date instanceof Date    // true
 ```
 
-12. `new` Operator 
--------------------
+## 12. `new` Operator 
+-----------------------
 - new is an operator used to create an object from a constructor.
 ```js
 const user = new User();
 const date = new Date();
 ```
 
-13. Spread Operator `...`
--------------------------
-a. With Array
---------------
+## 13. Spread Operator `...`
+----------------------------
+### a. With Array
+-----------------
 
-b. With Object
----------------
+### b. With Object
+------------------
 
-14. Rest Operator `...`
--------------------------
-a. With Array
---------------
+## 14. Rest Operator `...`
+--------------------------
+## a. With Array
+-----------------
 
-b. With Object
----------------
+## b. With Object
+------------------
