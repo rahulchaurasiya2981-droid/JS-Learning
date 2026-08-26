@@ -23,6 +23,7 @@ Types :
 1. Arithmetic Operators 
 ---------------------
 - Used for mathematical operations.
+
 | Operator | Meaning        |
 | -------- | -------------- |
 | `+`      | Addition       |
