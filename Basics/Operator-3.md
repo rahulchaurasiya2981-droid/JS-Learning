@@ -42,15 +42,15 @@ condition ? "yes" : "no"
 - The basic assignment operator is =, and JavaScript also provides compound assignment operators like +=, -=, *=, /=, %=, and `=` that perform an operation and then assign the result back to the same variable.**
 - Logical Assignment Operators (ES2021) = (&&=,||=,??=)
 
-a. How assignment works in memory
--------------------------------
+### a. How assignment works in memory
+-------------------------------------
 - The variable is binding with value
 ![variable pointing to memory block](./image/img1.png)
 
 ![variable rassignment pointing to next memory block](./image/img2.png)
 
-b. Compound Assignment Operators
----------------------------------
+### b. Compound Assignment Operators
+------------------------------------
 - These operators combine an operation with assignment.
 
 | Operator | Equivalent To |
@@ -99,7 +99,7 @@ console.log(5 != '5'); // (5 != '5') = (5 != 5)= false (cuase they are equal)
 // # Strict Equality
 console.log(5 !== '5') // true (vaue is not same)(cuase DT is different)
 ```
-# Note : In fact, NaN is not equal to itself:
+###  Note : In fact, NaN is not equal to itself:
 - `NaN` stands for `Not-a-Number`. 
 - In JavaScript, `NaN` is a special numeric value that `represents` an `unrepresentable or invalid or undefined numeric result`. 
 - `NaN` is `never equal to itself`, so both `NaN == NaN` and `NaN === NaN` return `false`. 
@@ -462,7 +462,7 @@ console.log("10" + 1)   // "101"
 3. Don't use it when the value is already a Boolean.
 
 
-### 7. `typeof`
+### 6. `typeof`
 ----------------
 - return type of value
 ```js
@@ -479,7 +479,7 @@ console.log(typeof undefined);  // "undefined"
 console.log(typeof NaN);        // "number"
 ```
 
-### 8. `delete`
+### 7. `delete`
 -----------------
 - used to remove property in object
 ```js
@@ -492,7 +492,7 @@ delete user?.age; // delete is operator and user?.age is operands
 console.log(user) // { name: 'rahul' }
 ```
 
-### 9. `void`
+### 8. `void`
 --------------
 - `void` evaluates an expression and `returns undefined`.
 - It's `rarely` needed in everyday application code, but it can be used when I intentionally want to ignore a return value or in some JavaScript expression patterns.
@@ -508,7 +508,7 @@ void function () {
 }();
 ```
 
-### 10. Bitwise NOT `~`
+### 9. Bitwise NOT `~`
 -----------------------
 - `~` is a unary bitwise operator.
 - It performs bitwise NOT on the number.
@@ -745,8 +745,8 @@ const date = new Date();
 
 ## 14. Rest Operator `...`
 --------------------------
-## a. With Array
+### a. With Array
 -----------------
 
-## b. With Object
+### b. With Object
 ------------------
