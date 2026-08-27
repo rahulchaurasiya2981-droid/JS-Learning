@@ -782,8 +782,8 @@ console.log("apple" in arr);                 // false => Because "apple" is a va
 console.log(arr.includes("apple"));          // true
 ```
 
-### e. With Sparse arrays 
---------------------------
+### e. With Sparse & Dense Arrays 
+----------------------------------
 - `Dense Array` or `Packed Array` => A dense array `has an element` at every index from `0 to length - 1`.
 ```js
 const arr = [10, 20, 30, 40]; // There are no missing indexes
@@ -839,17 +839,280 @@ console.log("name" in {name:"bro"}) // true
 
 ### g. in with functions
 -------------------------
-- Functions are objects in JavaScript, so in works with them.
+- Functions are objects in JavaScript, so in works with them.(this function object store in heap)
+```js
+const greet = function hello(){}
+console.log(greet)            // [Function: sum]
+console.log(typeof greet)     // function
+```
+- Internal structure
+Execution Context / Environment
+┌──────────────────┐
+│ greet ───────────┼──────────────┐
+└──────────────────┘              │
+                                  ▼
+                              Heap
+                         ┌─────────────────┐
+                         │ Function Object │
+                         │                 │
+                         │ name: "hello"   │
+                         │ code: () => {}  │
+                         │ prototype: ...  │
+                         └─────────────────┘
+
+### a. name 
+-------------
+- If a function expression has a name, .name uses that name. If it doesn't, JavaScript can infer the name from the surrounding assignment
+```js
+function add(){}
+console.log(add.name) // add 
+```
+- So JavaScript infers the function's name from the variable :
+
+```js
+const greet = function(){}
+console.log(greet.name) // greet
+```
+greet
+  │
+  │ reference
+  ▼
+┌─────────────────────┐
+│ Function Object     │
+│ name: "greet"       │
+│ code: function() {} │
+└─────────────────────┘
+       Heap
+
+### b. length 
+--------------
+- length tells you the number of parameters expected by the function.
+
+```js
+function add(a, b) { return a + b; }
+console.log(add.length); // 2
+```
+
+- length counts parameters before the first default parameter,excluding rest parameters.
+```js
+function test(a,d,b=20,c){}
+console.log(test.length) // 2
+
+function test(a,b,...c){}
+console.log(test.length) // 2
+```
+
+### c. prototype 
+-----------------
+- In JavaScript, a prototype is an `internal object` `from` which other objects `inherit` `properties and methods`.Instead of using traditional class-based inheritance like Java or C++, JavaScript uses a prototype-based inheritance model, meaning objects can act as direct blueprints for other objects
+
+#### a.Prototype with Array,Object & Function
+----------------------------------------------
+
+```js
+// # `.prototype` Return the shared object so that other object use their shared method 
+console.log(Array.prototype)     // Arr.Prototype
+console.log(Function.prototype)  // Function.Prototype
+console.log(Object.prototype)    // Object.Prototype
 
 
-#### Note :
+// # `.__proto__` retunr parent object, the child object arr is inheriting the shared propery/method of Array.prototype object
+// # __proto__ is an accessor property available through Object.prototype that allows you to get/set the [[Prototype]] of an object.
+// # __proto__ is a way to access that internal [[Prototype]] relationship.
+// # __proto__ allows us to access the [[Prototype]] of an object.
+
+// # Mental modal
+// arr
+//  │
+//  │ [[Prototype]]
+//  ▼
+// Array.prototype
+
+let arr=[1,2];
+console.log(arr.__proto__)      // Arr.Prototype => Give me the [[Prototype]] of arr. = Array.prototype
+console.log(Array.prototype)    // Arr.Prototype
+console.log(arr.__proto__ === Array.prototype) // true
+console.log(arr.__proto__.__proto__)            // (Array.prototype).__proto__ = Object.prototype 
+console.log(Array.prototype.__proto__)          // Array.prototype.__proto__ = Object.prototype  
+console.log(Object.prototype)                   // Object.prototype 
+console.log(arr.__proto__.__proto__ === Array.prototype.__proto__ === Object.prototype) // false cause === not support chaining
+console.log((arr.__proto__.__proto__ === Array.prototype.__proto__) === Object.prototype) // false  => (true) === Object.prototype 
+console.log(arr.__proto__.__proto__ === Object.prototype);      // true
+console.log(Array.prototype.__proto__ === Object.prototype);    // true
+// # So : arr.__proto__.__proto__ === Array.prototype.__proto__ === Object.prototype
+console.log(arr.__proto__.__proto__.__proto__)    // Array.prototype.__proto__.__proto__ = Object.prototype.__proto__ = null
+console.log(Array.prototype.__proto__.__proto__)  //  Object.prototype.__proto__ = null
+console.log(Object.prototype.__proto__);          // null
+
+
+// # Function
+function greet(){}
+console.log(greet.__proto__)      // Function.prototype                  
+console.log(Function.prototype)   //  Function.prototype
+console.log(greet.__proto__ === Function.prototype) // true
+console.log(greet.__proto__.__proto__ === Object.prototype)   // true
+console.log(greet.__proto__.__proto__.__proto__)    // null
+console.log(Object.prototype.__proto__) // null
+```
+![Prototype Chaining Flow](./image/img3.png)
+
+#### b. Prototype chaining 
+----------------------------
+- Prototype chaining is the mechanism in JavaScript where, if a property or method is not found on an object, JavaScript looks for it in that object's prototype, and continues searching up the prototype chain until it finds the property or reaches null.
+- How Prototype Chain Works
+    1. Check the object itself.
+    2. If found → return it.
+    3. If not found → go to its [[Prototype]].
+    4. Keep searching up the chain.
+    5. If it reaches null → return undefined.
+
+![Prototype Chaining Flow](./image/img3.png)
+
+#### c. get/set __proto__
+--------------------------
+- It is an accessor inherited from Object.prototype that lets you get/set an object's internal [[Prototype]]
+- Every ordinary JavaScript object has an internal [[Prototype]] link. __proto__ is a legacy accessor that exposes that link.
+
+```js
+const object1 = {
+    name: "rahul",
+    city: "delhi",
+    age: 12
+};
+```
+
+object1
+   │
+   │ reference
+   ▼
+┌──────────────────────┐
+│ Object               │
+│                      │
+│ name → "rahul"       │
+│ city → "delhi"       │
+│ age  → 12            │
+│                      │
+│ [[Prototype]] ───────┼──────────┐
+└──────────────────────┘          │
+                                  ▼
+                           Object.prototype
+                           ┌──────────────────┐
+                           │ toString         │
+                           │ hasOwnProperty   │
+                           │ valueOf          │
+                           │ [[Prototype]]    │
+                           └────────┬─────────┘
+                                    │
+                                    ▼
+                                  null
+
+```js
+const object1={
+    name:"rahul",
+    age:12,
+    city:'delhi'
+}
+
+const object2={marks:85}
+
+object2.__proto__ = object1
+
+console.log(object2.marks)  // 85
+console.log(object2.name)   // rahul
+console.log(object2.age)    // 12
+console.log(object2.city)   // delhi
+```
+
+![Prototype Chaining Flow](./image/img4.png)
+
+#### d. Object.getPrototypeOf(arr/obj/function)
+--------------------------------------------------
+- Better to use `Object.getPrototypeOf(arr/obj/function)` instead `__proto__` to get [[prototype]] (parent prototype link)
+```js
+let arr=[1]
+console.log(Object.getPrototypeOf(arr))  // Array.prototype
+
+let object1={name:"ra"}
+console.log(Object.getPrototypeOf(object1)) // Object.prototype
+console.log(Object.getPrototypeOf(Object.getPrototypeOf(object1))) // null
+
+function greed(){}
+console.log(Object.getPrototypeOf(greed)) // Function.prototype
+```
+
+#### e. set Object.create()
+-------------------------------
+- Object.create() `creates a new object` and `sets` the given object as `its prototype`.
+```js
+const person = {
+  greet() {
+    console.log("Hello");
+  }
+};
+const user = Object.create(person);   // user.__proto__ = person
+console.log(user.greet()); // Helle undefined
+// user
+//   ↓
+// person
+//   ↓
+// Object.prototype
+//   ↓
+// null
+```
+
+```js
+const obj = Object.create(null);
+obj.name = "Rahul";
+console.log("name" in obj); // true
+console.log("toString"/"hasOwnProperty/"valueOf" in obj); // false,Cause we set the [[prototype]] link null for obj
+```
+
+### d. in with nested objects
+------------------------------
+```js
+const user = {
+  profile: {
+    name: "Rahul"
+  }
+};
+console.log("profile" in user); // true
+console.log("name" in user); // false
+console.log("name" in user.profile); // true
+```
+
+### in vs Object.hasOwn()
+---------------------------
+- property `in` object = `check own + inherited properties`
+-  Object.hasOwn(object, property) = own properties only
+
+```js
+const person={ age:50 }
+const user=Object.create(person)
+user.name ="deepak"
+console.log("name" in user) // true
+console.log("age"  in user) // true 
+console.log(Object.hasOwn(user,"name")) // true
+console.log(Object.hasOwn(user,"age"))  // false, Because age belongs to the prototype.
+```
+### in operator vs optional chaining
+---------------------------------------
+- `in`      → check property existence
+- `?.`      → safe property access
+```js
+const user=null;
+console.log(user?.name); // undefined
+console.log("name" in user); // TypeError: Cannot use 'in' operator to search for 'name' in null
+```
+
+### Note :
 ------------
-- `in`       → property(key)/index existence
+- The in operator checks whether a property exists on an object or anywhere in its prototype chain. It returns a boolean.
 - "toString" (inheritence)
 - Object.hasOwn(obj,property)
 - `includes()` → value existence
 - Sparse array → missing property/index
 - Dense array → every index exists
+- Prototype in Array,Object & Function => [[Prototype]] => Prototype Chaining
 
 ## 11. `instanceof` Operator
 -----------------------------
