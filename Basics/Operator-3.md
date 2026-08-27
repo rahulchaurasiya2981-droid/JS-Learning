@@ -847,6 +847,8 @@ console.log(typeof greet)     // function
 ```
 - Internal structure
 Execution Context / Environment
+
+```text
 ┌──────────────────┐
 │ greet ───────────┼──────────────┐
 └──────────────────┘              │
@@ -859,6 +861,7 @@ Execution Context / Environment
                          │ code: () => {}  │
                          │ prototype: ...  │
                          └─────────────────┘
+```
 
 ### a. name 
 -------------
@@ -873,6 +876,8 @@ console.log(add.name) // add
 const greet = function(){}
 console.log(greet.name) // greet
 ```
+
+```text
 greet
   │
   │ reference
@@ -883,6 +888,7 @@ greet
 │ code: function() {} │
 └─────────────────────┘
        Heap
+```
 
 ### b. length 
 --------------
@@ -981,6 +987,7 @@ const object1 = {
 };
 ```
 
+```text
 object1
    │
    │ reference
@@ -1005,6 +1012,7 @@ object1
                                     │
                                     ▼
                                   null
+```
 
 ```js
 const object1={
