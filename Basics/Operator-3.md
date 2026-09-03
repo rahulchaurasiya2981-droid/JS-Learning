@@ -87,13 +87,13 @@ console.log(a**=b); // a=a**b = 1**2 = 1^2 = 1
 !==  strict inequality
 ```
 - Same idea also for (!=)(loose inequality) and (!==)(strict inequality)
-
+- `==` allows type coercion before comparison, while `===` does not perform type coercion and requires both value and type to be the same.
 ```js
 // # Loose Equality
 // # JavaScript may perform type coercion before comparing. 
-console.log(5 == '5')  // (5 == '5') = type coercion = (5 == 5) = true
+console.log(5 == '5')  // (5 == '5') = JS do type coercion = (5 == 5) = true
 // # Strict Equality
-console.log(5 === '5') // false (value is same but DT is diff)
+console.log(5 === '5') // false (js no do type coercion value is same but DT is diff)
 // # Loose Inquality
 console.log(5 != '5'); // (5 != '5') = (5 != 5)= false (cuase they are equal)
 // # Strict Equality
@@ -1088,7 +1088,7 @@ console.log("name" in user); // false
 console.log("name" in user.profile); // true
 ```
 
-### in vs Object.hasOwn()
+### e. in vs Object.hasOwn()
 ---------------------------
 - property `in` object = `check own + inherited properties`
 -  Object.hasOwn(object, property) = own properties only
@@ -1102,7 +1102,7 @@ console.log("age"  in user) // true
 console.log(Object.hasOwn(user,"name")) // true
 console.log(Object.hasOwn(user,"age"))  // false, Because age belongs to the prototype.
 ```
-### in operator vs optional chaining
+### f. in operator vs optional chaining
 ---------------------------------------
 - `in`      → check property existence
 - `?.`      → safe property access
@@ -1122,6 +1122,36 @@ console.log("name" in user); // TypeError: Cannot use 'in' operator to search fo
 - Dense array → every index exists
 - Prototype in Array,Object & Function => [[Prototype]] => Prototype Chaining
 
+```js
+let user = { name: "rahul" };
+
+console.log(user.__proto__);   // Object.prototype
+console.log(Object.prototype); // Object.prototype
+console.log(user.prototype);   // undefined
+```
+| Expression         | Meaning                                       |
+| ------------------ | --------------------------------------------- |
+| `user.__proto__`   | Gets the object's `[[Prototype]]`             |
+| `Object.prototype` | The prototype object of normal objects        |
+| `user.prototype`   | Looks for a normal property named `prototype` |
+| `undefined`        | Property doesn't exist                        |
+
+```js
+user
+┌─────────────────────┐
+│ name: "rahul"       │
+│                     │
+│ [[Prototype]] ───────────────► Object.prototype
+│                     │
+│ prototype: ❌       │
+└─────────────────────┘
+```
+
+```js
+__proto__  → "Who is my prototype?"
+prototype  → "What prototype will my created objects use?"
+```
+
 ## 11. `instanceof` Operator
 -----------------------------
 - Checks whether an object is associated with a constructor's prototype chain.
@@ -1133,6 +1163,187 @@ arr instanceof Array    // true
 
 const date = new Date();
 date instanceof Date    // true
+```
+- `object instanceof Constructor` checks whether `Constructor.prototype` exists somewhere in object's prototype chain.
+```js
+const arr = [];
+console.log(arr instanceof Array);  // true
+// # "Is Array.prototype somewhere in arr's prototype chain?"
+```
+
+```js
+// value instanceof prototype
+// # LEFT operand  → can be primitive or object(non-primitive)
+// RIGHT operand → normally must be a constructor/function
+```
+
+- Primitive values normally don't have a prototype chain 
+```js
+let user = 0   // null/undefined/""/NaN/0/12
+console.log(user instanceof Number)  // Object/Array => false
+```
+
+- Chain
+```js
+arr
+ │
+ ▼
+Array.prototype
+ │
+ ▼
+Object.prototype
+ │
+ ▼
+null
+```
+### a. Understanding With Constructor Functions
+-------------------------------------------------
+```js
+function Person(name) {
+    this.name = name;
+}
+```
+- Memory structure 
+```js
+                         STACK
+                ┌───────────────────┐
+                │ Execution Context  │
+                │                   │
+                │ Person ───────────────┐
+                └───────────────────┘  │
+                                       │
+                                       ▼
+
+                         HEAP
+
+                 ┌──────────────────────┐
+                 │   Person Function    │
+                 │                      │
+                 │ name: "Person"       │
+                 │ length: 1            │
+                 │                      │
+                 │ prototype ───────────────┐
+                 │                          │
+                 │ [[Prototype]] ──────┐   │
+                 └──────────────────────┘   │
+                                          │ │
+                           ┌──────────────┘ │
+                           │                │
+                           ▼                ▼
+                  Function.prototype   Person.prototype
+                  ┌───────────────┐    ┌─────────────────┐
+                  │ ...           │    │ constructor ───────► Person
+                  └───────┬───────┘    └─────────────────┘
+                          │
+                          ▼
+                    Object.prototype
+                          │
+                          ▼
+                         null
+```
+
+```js
+const rahul = new Person("rahul");
+```
+- Memory structure
+```js
+                 STACK
+        ┌────────────────────┐
+        │ rahul ────────────────┐
+        └────────────────────┘ │
+                               │
+                               ▼
+                         HEAP
+                   ┌─────────────────┐
+                   │ name: "rahul"   │
+                   │                 │
+                   │ [[Prototype]] ──────┐
+                   └─────────────────┘   │
+                                         │
+                                         ▼
+                                  Person.prototype
+                                  ┌────────────────┐
+                                  │ constructor ──────► Person
+                                  └────────────────┘
+```
+
+```js
+function Person(name)
+{
+    this.name=name 
+}
+console.log(Person)             // [Function: Person]
+console.log(Person.__proto__)   // [Function (anonymous)] Object
+console.log(Person.prototype)   // {}
+// # JavaScript creates an object whose prototype points to Person.prototype
+const rahul=new Person("rahul") 
+console.log(rahul);             // Person { name: 'rahul' }
+console.log(rahul.__proto__)    // {}
+console.log(rahul.prototype)    // undefined
+```
+```js
+function Person() {}
+const rahul = new Person();
+console.log(rahul instanceof Person);   // true
+console.log(rahul instanceof Object);   // true
+```
+
+### b.Array Example
+-------------------
+```js
+const numbers = [10, 20, 30];
+console.log(numbers instanceof Array);  // true
+console.log(numbers instanceof Object); // true
+```
+
+### c. instanceof With Primitive Values
+---------------------------------------
+- `instanceof` checks the `prototype-chain relationship`.
+```js
+console.log(10 instanceof Number);      // false (is not an object so that searching is happen in prototype chain)
+console.log("hello" instanceof String); // false
+console.log(true instanceof Boolean);   // false
+```
+- But wrapper objects behave differently:
+```js
+const num = new Number(10);
+console.log(num instanceof Number); // true
+```
+
+```js
+// # Non - Primitive Value
+let a={name:"sdf"};
+console.log(a.__proto__)    //  Object.prototype
+console.log(a.prototype)    // undefined (not found this key in object)
+
+// # Primitive Value
+let b =10;
+// # So primitive 10 doesn't itself have [[Prototype]]; JavaScript temporarily boxes it when accessing .__proto__.
+console.log(b.__proto__)    // {} in node and Number.prototype in browser
+console.log(b.__proto__.__proto__) // Object.prototype
+console.log(b.prototype)    // undefined (not found this key in object)
+```
+### d. instanceof internal code 
+--------------------------------
+```js
+// # Issue: Using __proto__ is legacy behavior (deprecated in ES6). 
+// # More importantly, objects created with Object.create(null) do not have __proto__ inherited from Object.prototype, 
+//   which can cause issues or unexpected behavior.
+// # Standard approach: Use Object.getPrototypeOf(obj).
+
+function instanceOf(obj,target){
+    if(obj === null || obj === undefined) return false;
+    let objPrototype = Object.getPrototypeOf(obj);
+
+    while (objPrototype !== null) {
+        if (objPrototype === target.prototype) {
+            return true;
+        }
+        objPrototype = Object.getPrototypeOf(objPrototype);
+    }
+    return false
+}
+console.log(instanceOf(1,Number))   // true
 ```
 
 ## 12. `new` Operator 
