@@ -1,20 +1,8 @@
-// # Issue: Using __proto__ is legacy behavior (deprecated in ES6). 
-// # More importantly, objects created with Object.create(null) do not have __proto__ inherited from Object.prototype, 
-//   which can cause issues or unexpected behavior.
-// # Standard approach: Use Object.getPrototypeOf(obj).
-
-function instanceOf(obj,target){
-    if(obj === null || obj === undefined) return false;
-    let objPrototype = Object.getPrototypeOf(obj);
-
-    while (objPrototype !== null) {
-        if (objPrototype === target.prototype) {
-            return true;
-        }
-        objPrototype = Object.getPrototypeOf(objPrototype);
-    }
-    return false
+function Person(name,age){
+    this.name=name;
+    this.age=age;
 }
 
-
-console.log(instanceOf(1,Number))   // true
+let rahul=new Person("Rahul",23);
+console.log(rahul.prototype)    // undefined
+console.log(rahul.__proto__)    // {}

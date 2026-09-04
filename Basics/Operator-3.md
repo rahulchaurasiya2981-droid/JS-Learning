@@ -1348,11 +1348,84 @@ console.log(instanceOf(1,Number))   // true
 
 ## 12. `new` Operator 
 -----------------------
-- new is an operator used to create an object from a constructor.
+- `prototype` is mainly a property of functions
 ```js
-const user = new User();
-const date = new Date();
+function Person() {}
+Person
+ ├── prototype ───────► Person.prototype
+ │
+ └── [[Prototype]] ───► Function.prototype ───► Object.prototype ───► null
 ```
+### a. constructor functions/function objects
+------------------------------------------------
+- Object, Array, Number, String, Boolean, etc. are built-in constructor function object.
+- They by defualt get `memory` in `HEAP`.
+- Have prototype (cause Function object) and [[Prototype]] 
+- `prototype` : points/references to its prototype object.
+- `[[prototype]]` : normally points to Function.prototype not Function Object. (Function.prototype !== Function)(Function.prototype === Function.__proto__)(final no more recursive)
+- They have a prototype property that references their corresponding prototype object, and their own [[Prototype]] points to Function.prototype.
+
+- Object
+```js
+let a={}
+a.prototype    // undefined
+a.__proto__ === Object.prototype    // true 
+a.__proto__.__proto__   // null
+```
+- Array
+```js
+let a=[];
+a.prototype     // undefined
+a.__proto__ === Array.prototype    /// true
+a.__proto__.__proto__ === Object.prototype  // true
+Array.prototype === Array   // false (both are different object in heap)
+Array.prototype === a.__proto__    // true
+Array.__proto__ === Function.prototype  // true
+```
+- Function 
+```js
+function greet(){}
+greet.prototype     // {}
+greet.__proto__     // Function.prototype
+greet.__proto__.__proto__  // Object.prototype
+greet.__proto__.__proto__.__proto__ // null
+greet.__proto__ === Function.prototype  // true
+Function === Function.prototype     // false
+greet.__proto__ === Function.prototype && Function.prototype === Function.__proto__ // true (same reference)
+greet.prototype // {}(different object on differnt memory location with [[p]])
+greet.prototype.__proto__   // Object.prototype
+greet.prototype.__proto__ === Object.prototype  // true
+```
+- Number 
+- a is primitive value why is taking in heap memory ?
+- Ans : When you try to access `__proto__` for primitive value -> JavaScript temporarily boxes 1 into a Number wrapper for that operation
+```js
+let a=1;
+a.prototype     // undefined
+a.__proto__ === Number.prototype    // true
+Number === Number.prototype // false
+a.__proto__.__proto__ === Object.prototype  // true
+Number.__proto__ === Function.prototype // true
+```
+- Boolean 
+```js
+let a=true
+a.prototype // false
+a.__proto__ // Boolean.prototype
+a.__proto__.__proto__ === Object.prototype  // true
+Boolean === Boolean.prototype   // false
+Boolean.__proto__ === Function.prototype    // true
+```
+- 🔥 Remember
+Note : Primitive → temporarily boxed when property/method access is needed → prototype chain is used → temporary wrapper is discarded.
+
+### b.How Wrapper Object & it's prototype is show in HEAP 
+---------------------------------------------------------
+![How Wrapper object and it's prototype is show in HEAP](./image/img5.png)
+
+### b. constructor functions/function objects
+-----------------------------------------------
+
 
 ## 13. Spread Operator `...`
 ----------------------------
